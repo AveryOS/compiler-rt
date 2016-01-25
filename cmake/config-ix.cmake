@@ -92,7 +92,12 @@ set(COMPILER_RT_SUPPORTED_ARCH)
 # runtime libraries supported by our current compilers cross-compiling
 # abilities.
 set(SIMPLE_SOURCE ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/simple.cc)
-file(WRITE ${SIMPLE_SOURCE} "#include <stdlib.h>\n#include <limits>\nint main() {}\n")
+
+if(FREESTANDING)
+  file(WRITE ${SIMPLE_SOURCE} "#include <stdint.h>\nint main() {}\n")
+else()
+  file(WRITE ${SIMPLE_SOURCE} "#include <stdlib.h>\n#include <limits>\nint main() {}\n")
+endif()
 
 # Add $arch as supported with no additional flags.
 macro(add_default_target_arch arch)

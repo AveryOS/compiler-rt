@@ -45,8 +45,6 @@ set(GENERIC_SOURCES
   divti3.c
   divtf3.c
   divxc3.c
-  enable_execute_stack.c
-  eprintf.c
   extendsfdf2.c
   extendhfsf2.c
   ffsdi2.c
@@ -84,7 +82,6 @@ set(GENERIC_SOURCES
   floatuntidf.c
   floatuntisf.c
   floatuntixf.c
-  int_util.c
   lshrdi3.c
   lshrti3.c
   moddi3.c
@@ -151,6 +148,14 @@ set(MSVC_SOURCES
  muldc3.c
  mulxc3.c)
 
+if(NOT FREESTANDING)
+  set(GENERIC_SOURCES
+      ${GENERIC_SOURCES}
+      eprintf.c
+      int_util.c
+      enable_execute_stack.c)
+endif()
+
 
 if(APPLE)
   set(GENERIC_SOURCES
@@ -163,7 +168,7 @@ if(APPLE)
     atomic_thread_fence.c)
 endif()
 
-if(NOT WIN32 OR MINGW)
+if(NOT FREESTANDING AND (NOT WIN32 OR MINGW))
   set(GENERIC_SOURCES
       ${GENERIC_SOURCES}
       emutls.c)
